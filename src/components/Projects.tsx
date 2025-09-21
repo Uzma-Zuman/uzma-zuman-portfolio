@@ -7,38 +7,6 @@ import mobileDev from '@/assets/mobile-dev.jpg';
 const Projects = () => {
   const projects = [
     {
-      title: 'Good Eats - Food Delivery App',
-      description: 'A comprehensive food delivery application built with Flutter & Firebase, featuring restaurant browsing, cart management, secure checkout, order tracking, and real-time notifications.',
-      image: mobileDev,
-      technologies: ['Flutter', 'Firebase', 'Payment Integration', 'Real-time Tracking'],
-      type: 'Internship Project',
-      category: 'E-commerce'
-    },
-    {
-      title: 'House Cook Maid - Service Booking',
-      description: 'Service booking application for household services with Firebase Authentication & Firestore. Features user ratings, reviews, and secure booking system.',
-      image: mobileDev,
-      technologies: ['Flutter', 'Firebase Auth', 'Firestore', 'Ratings System'],
-      type: 'Internship Project',
-      category: 'Service Platform'
-    },
-    {
-      title: 'Shalyst - Playlist Sharing App',
-      description: 'Social application for uploading and sharing music playlists. Includes user profiles, comments system, and Firebase-based real-time updates.',
-      image: mobileDev,
-      technologies: ['Flutter', 'Firebase', 'Real-time Database', 'Social Features'],
-      type: 'Internship Project',
-      category: 'Social Media'
-    },
-    {
-      title: 'Japanavi - Travel & Navigation',
-      description: 'Travel companion app with Google Maps integration supporting live location tracking and offline saved locations for seamless navigation.',
-      image: mobileDev,
-      technologies: ['Flutter', 'Google Maps API', 'Location Services', 'Offline Storage'],
-      type: 'Internship Project',
-      category: 'Travel & Navigation'
-    },
-    {
       title: 'Chatify App',
       description: 'Real-time chat application with CRUD operations using local storage. Features clean UI design and efficient message handling.',
       image: mobileDev,
