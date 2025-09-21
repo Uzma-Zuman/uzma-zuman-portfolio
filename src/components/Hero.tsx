@@ -58,7 +58,7 @@ const Hero = () => {
                 className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                 asChild
               >
-                <a href="#contact">
+                <a href="/Uzma_Zuman_CV.docx" download="Uzma_Zuman_CV.docx">
                   <Download className="mr-2 h-5 w-5" />
                   Download CV
                 </a>
