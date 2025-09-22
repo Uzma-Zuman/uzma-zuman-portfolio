@@ -7,15 +7,6 @@ import mobileDev from '@/assets/mobile-dev.jpg';
 const Projects = () => {
   const projects = [
     {
-      title: 'Chatify App',
-      description: 'Real-time chat application with CRUD operations using local storage. Features clean UI design and efficient message handling.',
-      image: mobileDev,
-      technologies: ['Flutter', 'Local Storage', 'Real-time Chat', 'CRUD Operations'],
-      type: 'Personal Project',
-      category: 'Communication',
-      github: 'https://github.com/Uzma-Zuman'
-    },
-    {
       title: 'Weather App',
       description: 'Weather application with REST API integration for live weather updates. Features responsive UI and city-based search functionality.',
       image: mobileDev,
