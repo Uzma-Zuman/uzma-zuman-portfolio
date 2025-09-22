@@ -1,12 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Github } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { ExternalLink, Github, Upload } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import mobileDev from '@/assets/mobile-dev.jpg';
 import weatherAppImage from '@/assets/weather-app-placeholder.jpg';
 import ecommerceAppImage from '@/assets/ecommerce-app-placeholder.jpg';
+import ProjectImageUpload from './ProjectImageUpload';
 
 const Projects = () => {
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const [projectImages, setProjectImages] = useState<Record<string, string>>({});
   const projects = [
     {
       title: 'Global Weather App',
@@ -28,6 +35,43 @@ const Projects = () => {
     }
   ];
 
+  // Load project images from database
+  useEffect(() => {
+    const loadProjectImages = async () => {
+      const { data, error } = await supabase
+        .from('project_images')
+        .select('project_title, image_url');
+
+      if (!error && data) {
+        const imageMap = data.reduce((acc, item) => {
+          acc[item.project_title] = item.image_url;
+          return acc;
+        }, {} as Record<string, string>);
+        setProjectImages(imageMap);
+      }
+    };
+
+    loadProjectImages();
+  }, []);
+
+  const handleImageUpload = (projectTitle: string) => {
+    setSelectedProject(projectTitle);
+    setUploadDialogOpen(true);
+  };
+
+  const handleImageUpdated = (imageUrl: string) => {
+    if (selectedProject) {
+      setProjectImages(prev => ({
+        ...prev,
+        [selectedProject]: imageUrl
+      }));
+    }
+  };
+
+  const getProjectImage = (project: any) => {
+    return projectImages[project.title] || project.image;
+  };
+
   return (
     <section id="projects" className="py-20 bg-muted/50">
       <div className="container mx-auto px-6">
@@ -45,7 +89,7 @@ const Projects = () => {
             <Card key={index} className="group overflow-hidden hover:border-primary/50 transition-all duration-300">
               <div className="relative overflow-hidden">
                 <img
-                  src={project.image}
+                  src={getProjectImage(project)}
                   alt={project.title}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -59,6 +103,16 @@ const Projects = () => {
                   <Badge variant="outline" className="text-xs border-white/20 text-white">
                     {project.category}
                   </Badge>
+                </div>
+                <div className="absolute top-4 right-4">
+                  <Button 
+                    variant="secondary" 
+                    size="icon"
+                    className="h-8 w-8 opacity-75 hover:opacity-100"
+                    onClick={() => handleImageUpload(project.title)}
+                  >
+                    <Upload className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
 
@@ -113,6 +167,19 @@ const Projects = () => {
             </a>
           </Button>
         </div>
+
+        <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
+          <DialogContent className="p-0 bg-transparent border-none shadow-none">
+            {selectedProject && (
+              <ProjectImageUpload
+                projectTitle={selectedProject}
+                currentImageUrl={projectImages[selectedProject]}
+                onImageUpdated={handleImageUpdated}
+                onClose={() => setUploadDialogOpen(false)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );
