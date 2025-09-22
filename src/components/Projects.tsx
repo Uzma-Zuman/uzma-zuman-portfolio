@@ -5,6 +5,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ExternalLink, Github, Upload } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import mobileDev from '@/assets/mobile-dev.jpg';
 import weatherAppImage from '@/assets/weather-app-placeholder.jpg';
 import ecommerceAppImage from '@/assets/ecommerce-app-placeholder.jpg';
@@ -14,6 +15,7 @@ const Projects = () => {
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [projectImages, setProjectImages] = useState<Record<string, string>>({});
+  const { isPortfolioOwner } = useAuth();
   const projects = [
     {
       title: 'Global Weather App',
@@ -104,16 +106,18 @@ const Projects = () => {
                     {project.category}
                   </Badge>
                 </div>
-                <div className="absolute top-4 right-4">
-                  <Button 
-                    variant="secondary" 
-                    size="icon"
-                    className="h-8 w-8 opacity-75 hover:opacity-100"
-                    onClick={() => handleImageUpload(project.title)}
-                  >
-                    <Upload className="h-4 w-4" />
-                  </Button>
-                </div>
+                {isPortfolioOwner && (
+                  <div className="absolute top-4 right-4">
+                    <Button 
+                      variant="secondary" 
+                      size="icon"
+                      className="h-8 w-8 opacity-75 hover:opacity-100"
+                      onClick={() => handleImageUpload(project.title)}
+                    >
+                      <Upload className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
 
               <CardHeader className="space-y-2">

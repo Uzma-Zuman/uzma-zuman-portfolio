@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Mail, Settings, LogOut } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, isPortfolioOwner, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,6 +72,31 @@ const Header = () => {
                 <Linkedin className="h-5 w-5" />
               </a>
             </Button>
+            
+            {/* Admin Controls */}
+            {user ? (
+              <div className="flex items-center gap-2">
+                {isPortfolioOwner && (
+                  <Button variant="outline" size="sm" asChild>
+                    <Link to="/auth">
+                      <Settings className="h-4 w-4 mr-2" />
+                      Admin
+                    </Link>
+                  </Button>
+                )}
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/auth">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Admin Login
+                </Link>
+              </Button>
+            )}
             <Button variant="ghost" size="icon" asChild>
               <a href="mailto:uzmazuman42@gmail.com">
                 <Mail className="h-5 w-5" />
@@ -106,6 +140,36 @@ const Header = () => {
                     <Linkedin className="h-5 w-5" />
                   </a>
                 </Button>
+                
+                {/* Mobile Admin Controls */}
+                <div className="pt-4 border-t border-border">
+                  {user ? (
+                    <div className="space-y-2">
+                      {isPortfolioOwner && (
+                        <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                          <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                            <Settings className="h-4 w-4 mr-2" />
+                            Admin Panel
+                          </Link>
+                        </Button>
+                      )}
+                      <Button variant="outline" size="sm" className="w-full justify-start" onClick={() => {
+                        handleSignOut();
+                        setIsMenuOpen(false);
+                      }}>
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Sign Out
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                      <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                        <Settings className="h-4 w-4 mr-2" />
+                        Admin Login
+                      </Link>
+                    </Button>
+                  )}
+                </div>
                 <Button variant="ghost" size="icon" asChild>
                   <a href="mailto:uzmazuman42@gmail.com">
                     <Mail className="h-5 w-5" />

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Upload, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 interface ProjectImageUploadProps {
   projectTitle: string;
@@ -17,6 +18,26 @@ const ProjectImageUpload = ({ projectTitle, currentImageUrl, onImageUpdated, onC
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { toast } = useToast();
+  const { user, isPortfolioOwner } = useAuth();
+
+  // Check if user is authenticated and is portfolio owner
+  if (!user || !isPortfolioOwner) {
+    return (
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader>
+          <CardTitle className="text-lg text-center">Access Restricted</CardTitle>
+        </CardHeader>
+        <CardContent className="text-center space-y-4">
+          <p className="text-muted-foreground">
+            You need to be signed in as the portfolio owner to upload images.
+          </p>
+          <Button onClick={onClose} variant="outline">
+            Close
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
