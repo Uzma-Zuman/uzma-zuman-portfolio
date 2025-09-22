@@ -3,13 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, Github } from 'lucide-react';
 import mobileDev from '@/assets/mobile-dev.jpg';
+import weatherAppImage from '@/assets/weather-app-placeholder.jpg';
+import ecommerceAppImage from '@/assets/ecommerce-app-placeholder.jpg';
 
 const Projects = () => {
   const projects = [
     {
-      title: 'Weather App',
+      title: 'Global Weather App',
       description: 'Weather application with REST API integration for live weather updates. Features responsive UI and city-based search functionality.',
-      image: mobileDev,
+      image: weatherAppImage,
       technologies: ['Flutter', 'REST API', 'Weather API', 'Responsive Design'],
       type: 'Personal Project',
       category: 'Utility',
@@ -18,7 +20,7 @@ const Projects = () => {
     {
       title: 'SellZone - E-commerce App',
       description: 'Complete e-commerce application with Firebase authentication, product browsing, shopping cart, and secure checkout features.',
-      image: mobileDev,
+      image: ecommerceAppImage,
       technologies: ['Flutter', 'Firebase Auth', 'E-commerce', 'Payment Integration'],
       type: 'Personal Project',
       category: 'E-commerce',
