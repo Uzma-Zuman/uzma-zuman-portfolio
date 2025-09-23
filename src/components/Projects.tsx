@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import mobileDev from '@/assets/mobile-dev.jpg';
-import weatherAppImage from '@/assets/weather-app-placeholder.jpg';
+import globalWeatherMain from '@/assets/global-weather-main.png';
 import ecommerceAppImage from '@/assets/ecommerce-app-placeholder.jpg';
 import ProjectImageUpload from './ProjectImageUpload';
 
@@ -19,9 +19,9 @@ const Projects = () => {
   const projects = [
     {
       title: 'Global Weather App',
-      description: 'Weather application with REST API integration for live weather updates. Features responsive UI and city-based search functionality.',
-      image: weatherAppImage,
-      technologies: ['Flutter', 'REST API', 'Weather API', 'Responsive Design'],
+      description: 'Beautiful weather application featuring real-time weather data, multi-day forecasts, city search functionality, and stunning visual backgrounds. Displays current temperature, weather conditions, and location-based forecasts.',
+      image: globalWeatherMain,
+      technologies: ['Flutter', 'Weather API', 'Location Services', 'Responsive UI', 'Search'],
       type: 'Personal Project',
       category: 'Utility',
       github: 'https://github.com/Uzma-Zuman'
