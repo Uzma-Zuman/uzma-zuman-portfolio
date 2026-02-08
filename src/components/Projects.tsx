@@ -2,21 +2,34 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { ExternalLink, Github, Upload } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { ExternalLink, Github, Upload, Play } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import mobileDev from '@/assets/mobile-dev.jpg';
 import globalWeatherMain from '@/assets/global-weather-main.png';
 import ecommerceAppImage from '@/assets/ecommerce-app-placeholder.jpg';
+import eventManagementDemo from '@/assets/event-management-demo.mp4';
+import moneyTargetDemo from '@/assets/money-target-demo.mp4';
 import ProjectImageUpload from './ProjectImageUpload';
+
+interface Project {
+  title: string;
+  description: string;
+  image?: string;
+  video?: string;
+  technologies: string[];
+  type: string;
+  category: string;
+  github: string;
+}
 
 const Projects = () => {
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [projectImages, setProjectImages] = useState<Record<string, string>>({});
   const { isPortfolioOwner } = useAuth();
-  const projects = [
+  const projects: Project[] = [
     {
       title: 'Global Weather App',
       description: 'Beautiful weather application featuring real-time weather data, multi-day forecasts, city search functionality, and stunning visual backgrounds. Displays current temperature, weather conditions, and location-based forecasts.',
@@ -24,6 +37,24 @@ const Projects = () => {
       technologies: ['Flutter', 'Weather API', 'Location Services', 'Responsive UI', 'Search'],
       type: 'Personal Project',
       category: 'Utility',
+      github: 'https://github.com/Uzma-Zuman'
+    },
+    {
+      title: 'Event Management App',
+      description: 'Modern Event Management Mobile Application with clean UI, smooth animations, and real-world functionality. Features include add/edit/delete events, interactive calendar view, dashboard with charts and statistics, light & dark theme support, and persistent settings.',
+      video: eventManagementDemo,
+      technologies: ['Flutter', 'Dart', 'FL Chart', 'Table Calendar', 'SharedPreferences', 'Animations'],
+      type: 'Personal Project',
+      category: 'Productivity',
+      github: 'https://github.com/Uzma-Zuman'
+    },
+    {
+      title: 'MoneyTarget – Finance Tracker',
+      description: 'Smart personal finance & income tracking app to manage income and savings goals. Set monthly, weekly, and yearly financial targets, track progress with visual indicators, detailed income history, global currency selection, and fully offline local storage.',
+      video: moneyTargetDemo,
+      technologies: ['Flutter', 'Dart', 'Material 3', 'SharedPreferences', 'Animations'],
+      type: 'Personal Project',
+      category: 'Finance',
       github: 'https://github.com/Uzma-Zuman'
     },
     {
@@ -90,11 +121,24 @@ const Projects = () => {
           {projects.map((project, index) => (
             <Card key={index} className="group overflow-hidden hover:border-primary/50 transition-all duration-300">
               <div className="relative overflow-hidden">
-                <img
-                  src={getProjectImage(project)}
-                  alt={project.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+                {project.video ? (
+                  <video
+                    src={project.video}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    muted
+                    loop
+                    playsInline
+                    onMouseEnter={(e) => e.currentTarget.play()}
+                    onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
+                    poster=""
+                  />
+                ) : (
+                  <img
+                    src={getProjectImage(project)}
+                    alt={project.title}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute top-4 left-4">
                   <Badge variant="secondary" className="text-xs">
