@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ExternalLink, Github, Upload, Play } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -26,6 +26,7 @@ interface Project {
 
 const Projects = () => {
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const [detailsProject, setDetailsProject] = useState<Project | null>(null);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [projectImages, setProjectImages] = useState<Record<string, string>>({});
   const { isPortfolioOwner } = useAuth();
@@ -197,10 +198,17 @@ const Projects = () => {
                       </a>
                     </Button>
                   )}
-                  <Button variant="default" size="sm" className="bg-gradient-primary">
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Details
-                  </Button>
+                  {project.video ? (
+                    <Button variant="default" size="sm" className="bg-gradient-primary" onClick={() => setDetailsProject(project)}>
+                      <Play className="h-4 w-4 mr-2" />
+                      Watch Demo
+                    </Button>
+                  ) : (
+                    <Button variant="default" size="sm" className="bg-gradient-primary">
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      Details
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -216,6 +224,30 @@ const Projects = () => {
           </Button>
         </div>
 
+        {/* Video Details Dialog */}
+        <Dialog open={!!detailsProject} onOpenChange={(open) => !open && setDetailsProject(null)}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>{detailsProject?.title}</DialogTitle>
+            </DialogHeader>
+            {detailsProject?.video && (
+              <video
+                src={detailsProject.video}
+                controls
+                autoPlay
+                className="w-full rounded-lg"
+              />
+            )}
+            <p className="text-muted-foreground text-sm">{detailsProject?.description}</p>
+            <div className="flex flex-wrap gap-2">
+              {detailsProject?.technologies.map((tech, i) => (
+                <Badge key={i} variant="outline" className="text-xs">{tech}</Badge>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Upload Dialog */}
         <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
           <DialogContent className="p-0 bg-transparent border-none shadow-none">
             {selectedProject && (
